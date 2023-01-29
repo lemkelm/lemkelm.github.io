@@ -10,7 +10,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-dragdata@1.1.3/dist/chartjs-plugin-dragdata.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/roughjs@3.1.0/dist/rough.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-rough@latest/dist/chartjs-plugin-rough.min.js"></script>-->
-
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/chartjs-plugin-dragdata@2.2.3/dist/chartjs-plugin-dragdata.min.js"></script>
@@ -49,31 +49,66 @@
 
     </div>
     <div class="inputs">
-      <input type="number" id="value1">
-      <input type="number" id="value2">
-      <input type="number" id="value3">
-      <input type="number" id="value4">
-      <input type="number" id="value5">
-      <input type="number" id="value6">
-      <button id="updateChart">Update</button>
+      <input type="number" id="value0" min="0" max="10" onkeypress="return isNumeric(event)"
+        oninput="maxLengthCheck(this)"
+        onKeyUp="if(this.value>10){this.value='10';}else if(this.value<0){this.value='0';}">
+      <input type="number" id="value1" min="0" max="10" onkeypress="return isNumeric(event)"
+        oninput="maxLengthCheck(this)"
+        onKeyUp="if(this.value>10){this.value='10';}else if(this.value<0){this.value='0';}">
+      <input type="number" id="value2" min="0" max="10" onkeypress="return isNumeric(event)"
+        oninput="maxLengthCheck(this)"
+        onKeyUp="if(this.value>10){this.value='10';}else if(this.value<0){this.value='0';}">
+      <input type="number" id="value3" min="0" max="10" onkeypress="return isNumeric(event)"
+        oninput="maxLengthCheck(this)"
+        onKeyUp="if(this.value>10){this.value='10';}else if(this.value<0){this.value='0';}">
+      <input type="number" id="value4" min="0" max="10" onkeypress="return isNumeric(event)"
+        oninput="maxLengthCheck(this)"
+        onKeyUp="if(this.value>10){this.value='10';}else if(this.value<0){this.value='0';}">
+      <input type="number" id="value5" min="0" max="10" onkeypress="return isNumeric(event)"
+        oninput="maxLengthCheck(this)"
+        onKeyUp="if(this.value>10){this.value='10';}else if(this.value<0){this.value='0';}">
+
     </div>
 
 
     <script>
+      function maxLengthCheck(object) {
+        if (object.value.length > object.max.length)
+          object.value = object.value.slice(0, object.max.length)
+      }
+
+      function isNumeric(evt) {
+        var theEvent = evt || window.event;
+        var key = theEvent.keyCode || theEvent.which;
+        key = String.fromCharCode(key);
+        var regex = /[0-9]/;
+        if (!regex.test(key)) {
+          theEvent.returnValue = false;
+          if (theEvent.preventDefault) theEvent.preventDefault();
+        }
+      }
+
+
+
+
       const labels = ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Teal'];
 
-      const data1 = 10;
-      const data2 = 9;
-      const data3 = 3;
-      const data4 = 5;
-      const data5 = 2;
-      const data6 = 3;
+      const data0 = 10;
+      const data1 = 9;
+      const data2 = 3;
+      const data3 = 5;
+      const data4 = 2;
+      const data5 = 3;
+
+
+
+
 
       const data = {
         labels: labels,
         datasets: [{
           label: '# of Votes',
-          data: [data1, data2, data3, data4, data5, data6],
+          data: [data0, data1, data2, data3, data4, data5],
           backgroundColor: 'rgba(255, 99, 32, 1)',
 
           borderColor: 'rgba(255, 99, 132, 1)',
@@ -128,7 +163,7 @@
                 color: 'red'
               },
               grid: {
-                color: ['blue', 'cyan']
+                color: ['blue', 'cyan', 'chartreuse']
               },
               pointLabels: {
                 font: {
@@ -176,7 +211,13 @@
               },
               onDragEnd: function (e, datasetIndex, index, value) {
                 e.target.style.cursor = 'default'
-                console.log(datasetIndex, index, value)
+                console.log(datasetIndex, index, value);
+                myChart.data.datasets[0].data[index] = value;
+                console.log(myChart.data.datasets[0].data[index]);
+                // value1.addEventListener('change', updateChartValue);
+                //  updateChartValue();
+                const inputboxes = document.getElementById('value' + index);
+                inputboxes.value = value;
               },
               //		  magnet: {
               //	    to: Math.round // to: (value) => value + 5
@@ -200,30 +241,38 @@
       );
 
 
-      const value1 = document.getElementById('value1');
-      value1.value = data1;
-      const value2 = document.getElementById('value2');
-      value2.value = data2;
-      const value3 = document.getElementById('value3');
-      value3.value = data3;
-      const value4 = document.getElementById('value4');
-      value4.value = data4;
-      const value5 = document.getElementById('value5');
-      value5.value = data5;
-      const value6 = document.getElementById('value6');
-      value6.value = data6;
 
-      const updateChart = document.getElementById('updateChart');
-      updateChart.addEventListener('click', updateChartValue);
+
+      const value0 = document.getElementById('value0');
+      const value1 = document.getElementById('value1');
+      const value2 = document.getElementById('value2');
+      const value3 = document.getElementById('value3');
+      const value4 = document.getElementById('value4');
+      const value5 = document.getElementById('value5');
+
+
+      value0.value = data0;
+      value1.value = data1;
+      value2.value = data2;
+      value3.value = data3;
+      value4.value = data4;
+      value5.value = data5;
+
+      value0.addEventListener('change', updateChartValue);
+      value1.addEventListener('change', updateChartValue);
+      value2.addEventListener('change', updateChartValue);
+      value3.addEventListener('change', updateChartValue);
+      value4.addEventListener('change', updateChartValue);
+      value5.addEventListener('change', updateChartValue);
 
       function updateChartValue() {
 
-        myChart.data.datasets[0].data[0] = value1.value;
-        myChart.data.datasets[0].data[1] = value2.value;
-        myChart.data.datasets[0].data[2] = value3.value;
-        myChart.data.datasets[0].data[3] = value4.value;
-        myChart.data.datasets[0].data[4] = value5.value;
-        myChart.data.datasets[0].data[5] = value6.value;
+        myChart.data.datasets[0].data[0] = value0.value;
+        myChart.data.datasets[0].data[1] = value1.value;
+        myChart.data.datasets[0].data[2] = value2.value;
+        myChart.data.datasets[0].data[3] = value3.value;
+        myChart.data.datasets[0].data[4] = value4.value;
+        myChart.data.datasets[0].data[5] = value5.value;
         myChart.update();
       }
 
