@@ -67,7 +67,7 @@
       <input type="number" id="value5" min="0" max="10" onkeypress="return isNumeric(event)"
         oninput="maxLengthCheck(this)"
         onKeyUp="if(this.value>10){this.value='10';}else if(this.value<0){this.value='0';}">
-      <input type="number" id="valuetotal" min="0" max="10" onkeypress="return isNumeric(event)">
+      <input type="text" id="valuetotal" readonly="readonly">
 
     </div>
 
@@ -274,6 +274,7 @@
       valuetotal.addEventListener('change', updateChartValue);
 
       function updateChartValue() {
+        valuetotal.value = data0 + data1 + data2 + data3 + data4 + data5;
 
         myChart.data.datasets[0].data[0] = value0.value;
         myChart.data.datasets[0].data[1] = value1.value;
