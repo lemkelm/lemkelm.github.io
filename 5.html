@@ -271,10 +271,12 @@
       value3.addEventListener('change', updateChartValue);
       value4.addEventListener('change', updateChartValue);
       value5.addEventListener('change', updateChartValue);
-      valuetotal.addEventListener('change', updateChartValue);
+      //valuetotal.addEventListener('change', updateChartValue);
 
       function updateChartValue() {
         valuetotal.value = data0 + data1 + data2 + data3 + data4 + data5;
+
+
 
         myChart.data.datasets[0].data[0] = value0.value;
         myChart.data.datasets[0].data[1] = value1.value;
