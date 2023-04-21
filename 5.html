@@ -67,6 +67,7 @@
       <input type="number" id="value5" min="0" max="10" onkeypress="return isNumeric(event)"
         oninput="maxLengthCheck(this)"
         onKeyUp="if(this.value>10){this.value='10';}else if(this.value<0){this.value='0';}">
+      <input type="number" id="valuetotal" min="0" max="10" onkeypress="return isNumeric(event)">
 
     </div>
 
@@ -249,6 +250,7 @@
       const value3 = document.getElementById('value3');
       const value4 = document.getElementById('value4');
       const value5 = document.getElementById('value5');
+      const valuetotal = document.getElementById('valuetotal');
 
 
       value0.value = data0;
@@ -257,10 +259,11 @@
       value3.value = data3;
       value4.value = data4;
       value5.value = data5;
+      valuetotal.value = data0 + data1 + data2 + data3 + data4 + data5;
 
       //value0.value + value1.value + value2.value + value3.value + value4.value + value5.value = datatotal;
 
-      //data0+data1+data2+data3+data4+data5 = datatotal;
+
 
       value0.addEventListener('change', updateChartValue);
       value1.addEventListener('change', updateChartValue);
@@ -268,6 +271,7 @@
       value3.addEventListener('change', updateChartValue);
       value4.addEventListener('change', updateChartValue);
       value5.addEventListener('change', updateChartValue);
+      valuetotal.addEventListener('change', updateChartValue);
 
       function updateChartValue() {
 
