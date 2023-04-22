@@ -87,7 +87,8 @@
             const data3 = 5;
             const data4 = 2;
             const data5 = 3;
-            const datatotal = data0 + data1 + data2 + data3 + data4 + data5;
+            const datatotal = (data0 + data1 + data2 + data3 + data4 + data5) / 6;
+            datatotal.value = Math.round((datatotal + Number.EPSILON) * 100) / 100;
 
             const value0 = document.getElementById('value0');
             const value1 = document.getElementById('value1');
@@ -97,7 +98,7 @@
             const value5 = document.getElementById('value5');
             const valuetotal = document.getElementById('valuetotal');
 
-            const labels = [['Story', value0.value], ['Pacing', value1.value], ['Visual', value2.value], ['Audio', value3.value], ['Gameplay', value4.value], ['Accessiblity', value5.value]];
+            const labels = [['Story', value0.value], ['Pacing', value1.value], ['Visual', value2.value], ['Accessiblity', value3.value], ['Audio', value4.value], ['Gameplay', value5.value]];
 
             function maxLengthCheck(object) {
                 if (object.value.length > object.max.length)
@@ -139,9 +140,19 @@
                     );
                     //  gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
                     gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, r);
-                    gradient.addColorStop(0, "red");
-                    gradient.addColorStop(0.2, "yellow");
+                    gradient.addColorStop(0, "black");
+                    gradient.addColorStop(0.1, "red");
+                    gradient.addColorStop(0.4, "yellow");
                     gradient.addColorStop(1, "green");
+
+                    /* gradient.addColorStop(0, "red");
+                    gradient.addColorStop(0.15, "orange");
+                    gradient.addColorStop(0.3, "yellow");
+                    gradient.addColorStop(0.5, "green");
+                    gradient.addColorStop(0.7, "blue");
+                    gradient.addColorStop(0.85, "indigo");
+                    gradient.addColorStop(1, "violet");*/
+
                 }
 
                 return gradient;
@@ -153,69 +164,99 @@
 
             const data = {
                 labels: labels,
-                datasets: [{
-                    label: '# of Votes',
-                    data: [data0, data1, data2, data3, data4, data5],
+                datasets: [
+                    {
+                        label: '',
+                        data: [data0, data1, data2, data3, data4, data5],
+                        fill: 'origin',
 
 
+                        //   borderColor: 'rgba(255, 99, 132, 1)',
+                        borderColor: function (context) {
+                            const chart = context.chart;
+                            const { ctx, chartArea } = chart;
 
-                    //   borderColor: 'rgba(255, 99, 132, 1)',
-                    borderColor: function (context) {
-                        const chart = context.chart;
-                        const { ctx, chartArea } = chart;
-
-                        if (!chartArea) {
-                            // This case happens on initial chart load
-                            return;
-                        }
-                        return getGradient(ctx, chartArea);
-                    },
-
-                    /*
-                                        borderColor: function (context) {
-                                            let c = colors[context.dataIndex];
-                                            if (!c) {
-                                                return;
-                                            }
-                                            if (context.active) {
-                                                c = helpers.getHoverColor(c);
-                                            }
-                                            const mid = helpers.color(c).desaturate(0.2).darken(0.2).rgbString();
-                                            const start = helpers.color(c).lighten(0.2).rotate(270).rgbString();
-                                            const end = helpers.color(c).lighten(0.1).rgbString();
-                                            return createRadialGradient3(context, start, mid, end);
-                                        },
-                    */
-
-                    borderWidth: 3,
-                    pointHitRadius: 50,
-
-                    backgroundColor: "#8E24AA44",
-
-
-
-
-                    pointBorderColor: "#000",
-                    pointBackgroundColor: "rgba(1,250,48,1)",
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'black',
-                    //     pointStyle: 'crossRot',
-                    pointRadius: 4,
-                    pointHoverRadius: 10,
-
-
-
-
-
-                    datalabels: {
-                        color: 'black',
-                        font: {
-                            weight: 'bold'
+                            if (!chartArea) {
+                                // This case happens on initial chart load
+                                return;
+                            }
+                            return getGradient(ctx, chartArea);
                         },
 
+                        /*
+                                            borderColor: function (context) {
+                                                let c = colors[context.dataIndex];
+                                                if (!c) {
+                                                    return;
+                                                }
+                                                if (context.active) {
+                                                    c = helpers.getHoverColor(c);
+                                                }
+                                                const mid = helpers.color(c).desaturate(0.2).darken(0.2).rgbString();
+                                                const start = helpers.color(c).lighten(0.2).rotate(270).rgbString();
+                                                const end = helpers.color(c).lighten(0.1).rgbString();
+                                                return createRadialGradient3(context, start, mid, end);
+                                            },
+                        */
 
+                        borderWidth: 4,
+                        pointHitRadius: 50,
+
+                        // backgroundColor: "#8E24AA44",
+
+                        backgroundColor: "#33333344",
+
+
+                        pointBorderColor: "#000",
+                        pointBackgroundColor: "rgba(1,250,48,1)",
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'black',
+                        //     pointStyle: 'crossRot',
+                        pointRadius: 4,
+                        pointHoverRadius: 10,
+
+
+
+
+
+                        datalabels: {
+                            color: 'black',
+                            font: {
+                                weight: 'bold'
+                            },
+
+
+                        },
                     },
-                }]
+                    {
+                        backgroundColor: '#fff',
+                        borderColor: 'transparent',
+                        pointRadius: 0,
+                        data: [-2, -2, -2, -2, -2, -2],
+                        fill: true,
+                    },
+                    {
+                        backgroundColor: '#ff000011',
+                        borderColor: 'transparent',
+                        pointRadius: 0,
+                        data: [2, 2, 2, 2, 2, 2],
+                        fill: '-1',
+                    },
+                    {
+                        backgroundColor: '#ffff0011',
+                        borderColor: 'transparent',
+                        pointRadius: 0,
+                        data: [5, 5, 5, 5, 5, 5],
+                        fill: '-1',
+                    },
+                    {
+                        backgroundColor: '#00b05011',
+                        borderColor: 'transparent',
+                        pointRadius: 0,
+                        data: [10, 10, 10, 10, 10, 10],
+                        fill: '-1',
+                    },
+                ]
             };
 
 
@@ -233,7 +274,8 @@
                     scales: {
                         r: {
                             max: 10,
-                            min: 0,
+                            min: -2,
+                            beginAtZero: true,
 
                             weight: 0,
                             border: {
@@ -276,6 +318,9 @@
 
                     },
                     plugins: {
+                        filler: {
+                            propagate: true
+                        },
                         title: {
                             display: true,
                             align: "start",
@@ -298,11 +343,13 @@
                             showTooltip: false,
                             onDragStart: function (e) {
                                 // console.log(e)
+
                             },
                             onDrag: function (e, datasetIndex, index, value) {
                                 e.target.style.cursor = 'grabbing'
                                 // console.log(e, datasetIndex, index, value)
                                 if (value < 0) return false // this only allows positive values
+
                             },
                             onDragEnd: function (e, datasetIndex, index, value) {
                                 e.target.style.cursor = 'default'
@@ -315,6 +362,7 @@
                                 inputboxes.value = value;
 
                                 updateChartValue();
+
                             },
                             //		  magnet: {
                             //	    to: Math.round // to: (value) => value + 5
@@ -349,8 +397,8 @@
             value3.value = data3;
             value4.value = data4;
             value5.value = data5;
-            valuetotal.value = data0 + data1 + data2 + data3 + data4 + data5;
-
+            valuetotal.value = (data0 + data1 + data2 + data3 + data4 + data5) / 6;
+            valuetotal.value = Math.round((datatotal + Number.EPSILON) * 100) / 100;
             //value0.value + value1.value + value2.value + value3.value + value4.value + value5.value = datatotal;
 
 
@@ -362,6 +410,9 @@
             value4.addEventListener('change', updateChartValue);
             value5.addEventListener('change', updateChartValue);
             //valuetotal.addEventListener('change', updateChartValue);
+
+
+
 
             function updateChartValue() {
 
@@ -377,9 +428,16 @@
                 if (isNaN(data4)) data4 = 0;
                 var data5 = parseFloat(document.getElementById("value5").value);
                 if (isNaN(data5)) data5 = 0;
-                var result = data0 + data1 + data2 + data3 + data4 + data5;
+                var result = (data0 + data1 + data2 + data3 + data4 + data5) / 6;
+                result = Math.round((result + Number.EPSILON) * 100) / 100;
                 document.getElementById("valuetotal").value = result;
 
+                labels[0][1] = data0;
+                labels[1][1] = data1;
+                labels[2][1] = data2;
+                labels[3][1] = data3;
+                labels[4][1] = data4;
+                labels[5][1] = data5;
                 /*
 
                                 var number0 = parseFloat(document.getElementById("value0").value);
