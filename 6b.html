@@ -365,17 +365,17 @@
 
             function updateChartValue() {
 
-                var data0 = document.getElementById("value0").value;
+                var data0 = parseFloat(document.getElementById("value0").value);
                 if (isNaN(data0)) data0 = 0;
-                var data1 = document.getElementById("value1").value;
+                var data1 = parseFloat(document.getElementById("value1").value);
                 if (isNaN(data1)) data1 = 0;
-                var data2 = document.getElementById("value2").value;
+                var data2 = parseFloat(document.getElementById("value2").value);
                 if (isNaN(data2)) data2 = 0;
-                var data3 = document.getElementById("value3").value;
+                var data3 = parseFloat(document.getElementById("value3").value);
                 if (isNaN(data3)) data3 = 0;
-                var data4 = document.getElementById("value4").value;
+                var data4 = parseFloat(document.getElementById("value4").value);
                 if (isNaN(data4)) data4 = 0;
-                var data5 = document.getElementById("value5").value;
+                var data5 = parseFloat(document.getElementById("value5").value);
                 if (isNaN(data5)) data5 = 0;
                 var result = data0 + data1 + data2 + data3 + data4 + data5;
                 document.getElementById("valuetotal").value = result;
