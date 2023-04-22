@@ -219,6 +219,8 @@
                 //  updateChartValue();
                 const inputboxes = document.getElementById('value' + index);
                 inputboxes.value = value;
+
+                updateChartValue();
               },
               //		  magnet: {
               //	    to: Math.round // to: (value) => value + 5
@@ -274,8 +276,21 @@
       //valuetotal.addEventListener('change', updateChartValue);
 
       function updateChartValue() {
-        valuetotal.value = data0 + data1 + data2 + data3 + data4 + data5;
-
+        // valuetotal.value = data0 + data1 + data2 + data3 + data4 + data5;
+        var number0 = parseFloat(document.getElementById("value0").value);
+        if (isNaN(number0)) number0 = 0;
+        var number1 = parseFloat(document.getElementById("value1").value);
+        if (isNaN(number1)) number1 = 0;
+        var number2 = parseFloat(document.getElementById("value2").value);
+        if (isNaN(number2)) number2 = 0;
+        var number3 = parseFloat(document.getElementById("value3").value);
+        if (isNaN(number3)) number3 = 0;
+        var number4 = parseFloat(document.getElementById("value4").value);
+        if (isNaN(number4)) number4 = 0;
+        var number5 = parseFloat(document.getElementById("value5").value);
+        if (isNaN(number5)) number5 = 0;
+        var result = number0 + number1 + number2 + number3 + number4 + number5;
+        document.getElementById("valuetotal").value = result;
 
 
         myChart.data.datasets[0].data[0] = value0.value;
@@ -288,6 +303,15 @@
       }
 
     </script>
+
+
+
+
+
+
+
+
+
 
   </body>
 
