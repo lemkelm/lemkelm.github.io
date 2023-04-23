@@ -34,24 +34,59 @@
 
 
 
-            .chart,
-            canvas {
-                width: 800px;
-                padding: 10px;
+            .chart {
+                width: 1000px;
+                height: 1000px;
+                margin: 0 auto;
             }
 
+            #myChart {
+                z-index: 0;
+
+
+
+            }
+
+            #canvas {
+                z-index: -1;
+
+                pointer-events: none;
+                position: absolute;
+                top: 100px;
+                left: 100px;
+            }
+
+            #sealcanvas {
+                z-index: 3;
+
+                pointer-events: none;
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+
+            #totalcanvas {
+                z-index: 1;
+                position: relative;
+                top: -530px;
+                left: 475px;
+
+                pointer-events: none;
+            }
+
+
             .inputs {
+                margin: 0 auto;
                 padding: 10px;
+
+
             }
 
         </style>
     </head>
 
     <body>
-        <div class="chart">
-            <canvas id="myChart"></canvas>
 
-        </div>
         <div class="inputs">
             <input type="number" id="value0" min="0" max="10" onkeypress="return isNumeric(event)"
                 oninput="maxLengthCheck(this)"
@@ -72,8 +107,18 @@
                 oninput="maxLengthCheck(this)"
                 onKeyUp="if(this.value>10){this.value='10';}else if(this.value<0){this.value='0';}">
             <input type="text" id="valuetotal" readonly="readonly">
+            <a id="link">Update</a>
 
         </div>
+        <div class="chart">
+
+            <canvas id="myChart"></canvas>
+            <canvas id="totalcanvas"></canvas>
+            <canvas id="sealcanvas"></canvas>
+            <canvas id="canvas"></canvas>
+
+        </div>
+
 
 
         <script>
@@ -97,6 +142,8 @@
             const value4 = document.getElementById('value4');
             const value5 = document.getElementById('value5');
             const valuetotal = document.getElementById('valuetotal');
+
+            chartvaluetotal(valuetotal.value);
 
             const labels = [['Story', value0.value], ['Pacing', value1.value], ['Visual', value2.value], ['Accessiblity', value3.value], ['Audio', value4.value], ['Gameplay', value5.value]];
 
@@ -166,7 +213,7 @@
                 labels: labels,
                 datasets: [
                     {
-                        label: '',
+                        label: 'main',
                         data: [data0, data1, data2, data3, data4, data5],
                         fill: 'origin',
 
@@ -227,34 +274,43 @@
 
 
                         },
+                        order: 1
                     },
                     {
+                        label: 's1',
                         backgroundColor: '#fff',
                         borderColor: 'transparent',
                         pointRadius: 0,
                         data: [-2, -2, -2, -2, -2, -2],
                         fill: true,
+                        order: 2
                     },
                     {
+                        label: 's2',
                         backgroundColor: '#ff000011',
                         borderColor: 'transparent',
                         pointRadius: 0,
                         data: [2, 2, 2, 2, 2, 2],
                         fill: '-1',
+                        order: 3
                     },
                     {
+                        label: 's3',
                         backgroundColor: '#ffff0011',
                         borderColor: 'transparent',
                         pointRadius: 0,
                         data: [5, 5, 5, 5, 5, 5],
                         fill: '-1',
+                        order: 4
                     },
                     {
+                        label: 's4',
                         backgroundColor: '#00b05011',
                         borderColor: 'transparent',
                         pointRadius: 0,
                         data: [10, 10, 10, 10, 10, 10],
                         fill: '-1',
+                        order: 5
                     },
                 ]
             };
@@ -263,13 +319,22 @@
             const config = {
                 type: 'radar',
                 data,
-                plugins: [ChartDataLabels],
+                plugins: [ChartDataLabels,
+                    {
+                        afterLayout: chart => {
+                            chart.getDatasetMeta(0).rScale._pointLabelItems.forEach(o => o.textAlign = 'center');
+                        }
+                    }],
                 options: {
-                    responsive: false,
+                    responsive: true,
+                    maintainAspectRatio: false,
                     onHover: function (e) {
                         const point = e.chart.getElementsAtEventForMode(e, 'nearest', { intersect: true }, false)
                         if (point.length) e.native.target.style.cursor = 'grab'
                         else e.native.target.style.cursor = 'default'
+                    },
+                    layout: {
+                        padding: 0
                     },
                     scales: {
                         r: {
@@ -277,6 +342,7 @@
                             min: -2,
                             beginAtZero: true,
 
+                            drawTicks: false,
                             weight: 0,
                             border: {
                                 color: 'green',
@@ -285,7 +351,7 @@
 
                             angleLines: {
                                 //  color: 'red'
-                                color: ['red', 'orange', 'yellow', 'green', 'blue', 'indigo'],
+                                color: ['red', 'orange', 'gold', 'green', 'blue', 'indigo'],
                             },
                             grid: {
 
@@ -302,8 +368,12 @@
                                 },
                             },
                             pointLabels: {
+                                color: 'black',
+                                // color: ['red', 'orange', 'gold', 'green', 'blue', 'indigo'],
+                                padding: 20,
                                 font: {
-                                    size: 20
+                                    size: 30,
+
                                 }
                             },
                             ticks: {
@@ -312,6 +382,11 @@
                                 display: false,
                                 count: 10,
                                 stepSize: 1,
+                                backdropPadding: {
+                                    x: 0,
+                                    y: 0
+                                },
+                                showLabelBackdrop: false,
                             }
                         }
 
@@ -432,12 +507,17 @@
                 result = Math.round((result + Number.EPSILON) * 100) / 100;
                 document.getElementById("valuetotal").value = result;
 
+                chartvaluetotal(result);
+
+
                 labels[0][1] = data0;
                 labels[1][1] = data1;
                 labels[2][1] = data2;
                 labels[3][1] = data3;
                 labels[4][1] = data4;
                 labels[5][1] = data5;
+
+
                 /*
 
                                 var number0 = parseFloat(document.getElementById("value0").value);
@@ -466,6 +546,209 @@
                 myChart.update();
             }
 
+
+
+
+            //  let canvas = document.getElementById("myChart");
+            $(function () {
+
+                var canvas = document.getElementById("canvas");
+                var ctx = canvas.getContext("2d");
+
+
+                canvas.height = 100;
+                canvas.width = 100;
+                //  function drawStar(cx, cy, spikes, outerRadius, innerRadius) {
+                function drawStar(spikes, outerRadius, innerRadius) {
+
+                    var cx = canvas.width / 2;
+                    var cy = canvas.height / 2;
+                    var rot = Math.PI / 2 * 3;
+                    var x = cx;
+                    var y = cy;
+
+
+
+
+                    var step = Math.PI / spikes;
+
+                    ctx.beginPath();
+                    ctx.moveTo(cx, cy - outerRadius)
+                    for (i = 0; i < spikes; i++) {
+                        x = cx + Math.cos(rot) * outerRadius;
+                        y = cy + Math.sin(rot) * outerRadius;
+                        ctx.lineTo(x, y)
+                        rot += step
+
+                        x = cx + Math.cos(rot) * innerRadius;
+                        y = cy + Math.sin(rot) * innerRadius;
+                        ctx.lineTo(x, y)
+                        rot += step
+                    }
+                    ctx.lineTo(cx, cy - outerRadius);
+                    ctx.closePath();
+                    ctx.lineWidth = 2;
+                    ctx.strokeStyle = 'brown';
+                    ctx.stroke();
+                    ctx.fillStyle = 'gold';
+                    ctx.fill();
+
+                }
+
+                drawStar(5, 30, 18);
+
+            }); // end $(function(){});
+
+            function chartvaluetotal(value) {
+
+                //  const ctx = document.getElementById("totalcanvas").getContext("2d");
+
+                const canvas = document.getElementById("totalcanvas");
+                const ctx = canvas.getContext("2d");
+
+                canvas.height = 100;
+                canvas.width = 100;
+                //    top:365
+                //     left:375
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                const textvalue = value;
+
+
+                ctx.font = "30px sans-serif";
+                ctx.textBaseline = 'middle';
+                ctx.textAlign = 'center';
+                //  ctx.textAlign = "center";
+                ctx.fillText(textvalue, canvas.width / 2, canvas.height / 2);
+            }
+
+            (function () {
+                const canvas = document.getElementById('sealcanvas');
+                const context = canvas.getContext('2d');
+
+                // resize the canvas to fill browser window dynamically
+                window.addEventListener('resize', resizeCanvas, false);
+
+                function resizeCanvas() {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+
+                    /**
+                     * Your drawings need to be inside this function otherwise they will be reset when
+                     * you resize the browser window and the canvas goes will be cleared.
+                     */
+
+                    //          seal();
+                }
+
+                resizeCanvas();
+
+
+
+                function seal() {
+                    //  const ctx = document.getElementById("sealcanvas").getContext("2d");
+                    const canvas = document.getElementById("sealcanvas");
+                    const ctx = canvas.getContext("2d");
+
+                    //    canvas.height = 1000;
+                    //   canvas.width = 1000;
+
+
+
+
+                    const img = new Image(); // Create new img element
+                    img.addEventListener(
+                        "load",
+                        () => {
+                            // execute drawImage statements here
+                            ctx.drawImage(img, 0, 0, img.width, img.height);
+                        },
+                        false
+                    );
+                    img.src = "sealsit.png"; // Set source path
+
+                    var down = false;
+                    ctx.canvas.addEventListener('mousedown', function () { down = true; }, false);
+                    ctx.canvas.addEventListener('mouseup', function () { down = false; }, false);
+                    ctx.canvas.addEventListener('mousemove', function (event) {
+                        if (down) {
+                            ctx.clearRect(0, 0, canvas.width, canvas.height);
+                            ctx.translate(img.width / 2 * -1, img.height / 2 * -1);
+                            ctx.drawImage(img, event.clientX - this.offsetLeft,
+                                event.clientY - this.offsetTop, img.width, img.height);
+                            ctx.translate(img.width / 2, img.height / 2);
+                        }
+                    }, false);
+                }
+
+
+
+
+
+            })();
+
+
+            function seal2() {
+                //  const ctx = document.getElementById("sealcanvas").getContext("2d");
+                const canvas = document.getElementById("sealcanvas");
+                const ctx = canvas.getContext("2d");
+
+                //    canvas.height = 1000;
+                //   canvas.width = 1000;
+
+
+
+
+                const img = new Image(); // Create new img element
+                img.addEventListener(
+                    "load",
+                    () => {
+                        // execute drawImage statements here
+                        ctx.drawImage(img, 0, 0, img.width, img.height);
+                    },
+                    false
+                );
+                img.src = "sealsit.png"; // Set source path
+
+                var down = false;
+                ctx.canvas.addEventListener('mousedown', function () { down = true; }, false);
+                ctx.canvas.addEventListener('mouseup', function () { down = false; }, false);
+                ctx.canvas.addEventListener('mousemove', function (event) {
+                    if (down) {
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        //    updateChartValue()
+                        ctx.translate(img.width / 2 * -1, img.height / 2 * -1);
+                        ctx.drawImage(img, event.clientX - this.offsetLeft,
+                            event.clientY - this.offsetTop, img.width, img.height);
+                        ctx.translate(img.width / 2, img.height / 2);
+                    }
+                }, false);
+            }
+
+
+            seal2()
+
+
+
+            async function autoDownloadCanvas() {
+                let link = document.getElementById('link');
+                link.setAttribute('download', 'example.png');
+                link.setAttribute('href', canvas.toDataURL("image/png"));
+                link.click();
+            }
+            //  autoDownloadCanvas()
+
+            function download() {
+                var link = document.createElement('a');
+                link.download = 'filename.png';
+                link.href = document.getElementById('myChart').toDataURL('image/png')
+                link.click();
+            }
+
+            //     download();
+
+            console.log(myChart)
         </script>
 
 
