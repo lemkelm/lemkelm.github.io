@@ -48,13 +48,23 @@
             }
 
             #canvas {
-                z-index: -1;
+                z-index: 1;
 
-                pointer-events: none;
+
                 position: absolute;
                 top: 100px;
                 left: 100px;
             }
+
+            #newcanvas {
+                z-index: 1;
+
+
+                position: absolute;
+                top: 100px;
+                left: 100px;
+            }
+
 
             #sealcanvas {
                 z-index: 3;
@@ -114,8 +124,9 @@
 
             <canvas id="myChart"></canvas>
             <canvas id="totalcanvas"></canvas>
-            <canvas id="sealcanvas"></canvas>
-            <canvas id="canvas"></canvas>
+            <!-- <canvas id="sealcanvas"></canvas>
+            <canvas id="canvas"></canvas> -->
+            <canvas id="newcanvas"></canvas>
 
         </div>
 
@@ -316,6 +327,55 @@
             };
 
 
+            /*
+            //      (function () {
+            function seal2() {
+                //  const ctx = document.getElementById("sealcanvas").getContext("2d");
+                const canvas = document.getElementById("myChart");
+                const ctx = canvas.getContext("2d");
+
+                //    canvas.height = 1000;
+                //   canvas.width = 1000;
+
+
+
+
+                const sealimg = new Image(); // Create new img element
+                sealimg.addEventListener(
+                    "load",
+                    () => {
+                        // execute drawImage statements here
+                        ctx.drawImage(sealimg, 0, 0, sealimg.width, sealimg.height);
+                    },
+                    false
+                );
+                sealimg.src = "sealsit.png"; // Set source path
+
+                var down = false;
+                ctx.canvas.addEventListener('mousedown', function () { down = true; }, false);
+                ctx.canvas.addEventListener('mouseup', function () { down = false; }, false);
+                ctx.canvas.addEventListener('mousemove', function (event) {
+                    if (down) {
+                            ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        //updateChartValue()
+                        ctx.translate(sealimg.width / 2 * -1, sealimg.height / 2 * -1);
+                        ctx.drawImage(sealimg, event.clientX - this.offsetLeft,
+                            event.clientY - this.offsetTop, sealimg.width, sealimg.height);
+                        ctx.translate(sealimg.width / 2, sealimg.height / 2);
+                    }
+                }, false);
+            }
+
+            seal2();
+            //      })();
+*/
+
+            const sealimg = new Image();
+            sealimg.src = "sealsit.png";
+
+
+
+
             const config = {
                 type: 'radar',
                 data,
@@ -324,7 +384,59 @@
                         afterLayout: chart => {
                             chart.getDatasetMeta(0).rScale._pointLabelItems.forEach(o => o.textAlign = 'center');
                         }
-                    }],
+                    },
+                    {
+                        id: 'customImage',
+                        beforeDraw: (chart) => {
+                            /*
+                            const ctx = chart.ctx;
+                            sealimg.addEventListener(
+                                "load",
+                                () => {
+                                    // execute drawImage statements here
+                                    ctx.drawImage(sealimg, 0, 0, sealimg.width, sealimg.height);
+                                },
+                                false
+                            );
+                            sealimg.src = "sealsit.png"; // Set source path
+
+                            var down = false;
+                            ctx.addEventListener('mousedown', function () { down = true; }, false);
+                            ctx.addEventListener('mouseup', function () { down = false; }, false);
+                            ctx.addEventListener('mousemove', function (event) {
+                                if (down) {
+                                    ctx.clearRect(0, 0, sealimg.width, canvas.height);
+                                    //    updateChartValue()
+                                    ctx.translate(sealimg.width / 2 * -1, sealimg.height / 2 * -1);
+                                    ctx.drawImage(sealimg, event.clientX - this.offsetLeft,
+                                        event.clientY - this.offsetTop, sealimg.width, sealimg.height);
+                                    ctx.translate(sealimg.width / 2, sealimg.height / 2);
+                                }
+                            }, false);
+*/
+
+                            /*
+                                                        if (sealimg.complete) {
+                                                            const ctx = chart.ctx;
+                                                            const {
+                                                                top,
+                                                                left,
+                                                                width,
+                                                                height
+                                                            } = chart.chartArea;
+                                                            const x = left + width / 2 - sealimg.width / 2;
+                                                            const y = top + height / 2 - sealimg.height / 2;
+                                                            ctx.drawImage(sealimg, x, y);
+                                                        } else {
+                                                            sealimg.onload = () => chart.draw();
+                                                        }
+                            */
+
+
+                        }
+
+                    },
+                ],
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
@@ -455,6 +567,7 @@
             };
 
             const myChart = new Chart(
+
                 document.getElementById('myChart'),
                 config
 
@@ -556,8 +669,8 @@
                 var ctx = canvas.getContext("2d");
 
 
-                canvas.height = 100;
-                canvas.width = 100;
+                canvas.height = 1000;
+                canvas.width = 1000;
                 //  function drawStar(cx, cy, spikes, outerRadius, innerRadius) {
                 function drawStar(spikes, outerRadius, innerRadius) {
 
@@ -594,10 +707,277 @@
                     ctx.fill();
 
                 }
+                function seal3() {
+                    const img = new Image(); // Create new img element
+                    img.addEventListener(
+                        "load",
+                        () => {
+                            // execute drawImage statements here
+                            ctx.drawImage(img, 0, 0, img.width, img.height);
+                        },
+                        false
+                    );
+                    img.src = "sealsit.png"; // Set source path
+
+                    var down = false;
+                    ctx.canvas.addEventListener('mousedown', function () { down = true; }, false);
+                    ctx.canvas.addEventListener('mouseup', function () { down = false; }, false);
+                    ctx.canvas.addEventListener('mousemove', function (event) {
+                        if (down) {
+                            ctx.clearRect(0, 0, canvas.width, canvas.height);
+                            ctx.translate(img.width / 2 * -1, img.height / 2 * -1);
+                            ctx.drawImage(img, event.clientX - this.offsetLeft,
+                                event.clientY - this.offsetTop, img.width, img.height);
+                            ctx.translate(img.width / 2, img.height / 2);
+                        }
+                    }, false);
+                }
+
+
 
                 drawStar(5, 30, 18);
+                seal3()
 
             }); // end $(function(){});
+
+
+            $(function () {
+                // get canvas related references
+                const canvas = document.getElementById("newcanvas");
+                const ctx = canvas.getContext("2d");
+                const BB = canvas.getBoundingClientRect();
+                const offsetX = BB.left;
+                const offsetY = BB.top;
+                const WIDTH = canvas.width;
+                const HEIGHT = canvas.height;
+
+                // drag related variables
+                let dragok = false;
+                let startX;
+                let startY;
+
+                // an array of objects that define different shapes
+                const shapes = [];
+                // define 2 rectangles
+                shapes.push({
+                    x: 10,
+                    y: 100,
+                    width: 30,
+                    height: 30,
+                    fill: "#444444",
+                    isDragging: false
+                });
+                shapes.push({
+                    x: 80,
+                    y: 100,
+                    width: 30,
+                    height: 30,
+                    fill: "#ff550d",
+                    isDragging: false
+                });
+                // define 2 circles
+                shapes.push({ x: 150, y: 100, r: 10, fill: "#800080", isDragging: false });
+                shapes.push({ x: 200, y: 100, r: 10, fill: "#0c64e8", isDragging: false });
+
+                // listen for mouse events
+                canvas.onmousedown = myDown;
+                canvas.onmouseup = myUp;
+                canvas.onmousemove = myMove;
+
+                // call to draw the scene
+                draw();
+
+                // draw a single rect
+                function rect(r) {
+                    ctx.fillStyle = r.fill;
+                    ctx.fillRect(r.x, r.y, r.width, r.height);
+                }
+
+                // draw a single rect
+                function circle(c) {
+                    ctx.fillStyle = c.fill;
+                    ctx.beginPath();
+                    ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+                    ctx.closePath();
+                    ctx.fill();
+                }
+
+                //     function drawStar2(cx, cy, spikes, outerRadius, innerRadius) {
+                function drawStar2(r) {
+
+                    var cx = r.x;
+                    var cy = r.y;
+
+                    //   var cx = canvas.width / 2;
+                    //  var cy = canvas.height / 2;
+                    var rot = Math.PI / 2 * 3;
+                    var x = cx;
+                    var y = cy;
+
+                    var spikes = 5;
+                    var outerRadius = 30;
+                    var innerRadius = 18;
+
+
+
+                    var step = Math.PI / spikes;
+
+                    ctx.beginPath();
+                    ctx.moveTo(cx, cy - outerRadius)
+                    for (i = 0; i < spikes; i++) {
+                        x = cx + Math.cos(rot) * outerRadius;
+                        y = cy + Math.sin(rot) * outerRadius;
+                        ctx.lineTo(x, y)
+                        rot += step
+
+                        x = cx + Math.cos(rot) * innerRadius;
+                        y = cy + Math.sin(rot) * innerRadius;
+                        ctx.lineTo(x, y)
+                        rot += step
+                    }
+                    ctx.lineTo(cx, cy - outerRadius);
+                    ctx.closePath();
+                    ctx.lineWidth = 2;
+                    ctx.strokeStyle = 'brown';
+                    ctx.stroke();
+                    ctx.fillStyle = 'gold';
+                    ctx.fill();
+                }
+
+                function seal4(r) {
+                    const img = new Image(); // Create new img element
+                    img.addEventListener(
+                        "load",
+                        () => {
+                            // execute drawImage statements here
+                            ctx.drawImage(img, 0, 0, img.width, img.height);
+                        },
+                        false
+                    );
+                    img.src = "sealsit.png"; // Set source path
+
+
+                }
+
+
+                // clear the canvas
+                function clear() {
+                    ctx.clearRect(0, 0, WIDTH, HEIGHT);
+                }
+
+                // redraw the scene
+                function draw() {
+                    clear();
+                    // redraw each shape in the shapes[] array
+                    for (let i = 0; i < shapes.length; i++) {
+                        // decide if the shape is a rect or circle
+                        // (it's a rect if it has a width property)
+                        if (shapes[i].width) {
+                            //       rect(shapes[i]);
+                            seal4(shapes[i]);
+                        } else {
+                            drawStar2(shapes[i]);
+                            //     circle(shapes[i]);
+                        }
+                    }
+                }
+
+                // handle mousedown events
+                function myDown(e) {
+                    // tell the browser we're handling this mouse event
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    // get the current mouse position
+                    const mx = parseInt(e.clientX - offsetX);
+                    const my = parseInt(e.clientY - offsetY);
+
+                    // test each shape to see if mouse is inside
+                    dragok = false;
+                    for (let i = 0; i < shapes.length; i++) {
+                        var s = shapes[i];
+                        // decide if the shape is a rect or circle
+                        if (s.width) {
+                            // test if the mouse is inside this rect
+                            if (
+                                !dragok &&
+                                mx > s.x &&
+                                mx < s.x + s.width &&
+                                my > s.y &&
+                                my < s.y + s.height
+                            ) {
+                                // if yes, set that rects isDragging=true
+                                dragok = true;
+                                s.isDragging = true;
+                            }
+                        } else {
+                            const dx = s.x - mx;
+                            const dy = s.y - my;
+                            // test if the mouse is inside this circle
+                            if (!dragok && dx * dx + dy * dy < s.r * s.r) {
+                                dragok = true;
+                                s.isDragging = true;
+                            }
+                        }
+                    }
+                    // save the current mouse position
+                    startX = mx;
+                    startY = my;
+                }
+
+                // handle mouseup events
+                function myUp(e) {
+                    // tell the browser we're handling this mouse event
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    // clear all the dragging flags
+                    dragok = false;
+                    for (let i = 0; i < shapes.length; i++) {
+                        shapes[i].isDragging = false;
+                    }
+                }
+
+                // handle mouse moves
+                function myMove(e) {
+                    // if we're dragging anything...
+                    if (dragok) {
+                        // tell the browser we're handling this mouse event
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        // get the current mouse position
+                        const mx = parseInt(e.clientX - offsetX);
+                        const my = parseInt(e.clientY - offsetY);
+
+                        // calculate the distance the mouse has moved
+                        // since the last mousemove
+                        const dx = mx - startX;
+                        const dy = my - startY;
+
+                        // move each rect that isDragging
+                        // by the distance the mouse has moved
+                        // since the last mousemove
+                        for (let i = 0; i < shapes.length; i++) {
+                            const s = shapes[i];
+                            if (s.isDragging) {
+                                s.x += dx;
+                                s.y += dy;
+                            }
+                        }
+
+                        // redraw the scene with the new rect positions
+                        draw();
+
+                        // reset the starting mouse position for the next mousemove
+                        startX = mx;
+                        startY = my;
+                    }
+                }
+
+            });
+
+
 
             function chartvaluetotal(value) {
 
@@ -651,8 +1031,8 @@
                     const canvas = document.getElementById("sealcanvas");
                     const ctx = canvas.getContext("2d");
 
-                    //    canvas.height = 1000;
-                    //   canvas.width = 1000;
+                    canvas.height = 1000;
+                    canvas.width = 1000;
 
 
 
@@ -683,51 +1063,20 @@
                 }
 
 
-
+                seal();
 
 
             })();
 
 
-            function seal2() {
-                //  const ctx = document.getElementById("sealcanvas").getContext("2d");
-                const canvas = document.getElementById("sealcanvas");
-                const ctx = canvas.getContext("2d");
-
-                //    canvas.height = 1000;
-                //   canvas.width = 1000;
 
 
 
 
-                const img = new Image(); // Create new img element
-                img.addEventListener(
-                    "load",
-                    () => {
-                        // execute drawImage statements here
-                        ctx.drawImage(img, 0, 0, img.width, img.height);
-                    },
-                    false
-                );
-                img.src = "sealsit.png"; // Set source path
-
-                var down = false;
-                ctx.canvas.addEventListener('mousedown', function () { down = true; }, false);
-                ctx.canvas.addEventListener('mouseup', function () { down = false; }, false);
-                ctx.canvas.addEventListener('mousemove', function (event) {
-                    if (down) {
-                        ctx.clearRect(0, 0, canvas.width, canvas.height);
-                        //    updateChartValue()
-                        ctx.translate(img.width / 2 * -1, img.height / 2 * -1);
-                        ctx.drawImage(img, event.clientX - this.offsetLeft,
-                            event.clientY - this.offsetTop, img.width, img.height);
-                        ctx.translate(img.width / 2, img.height / 2);
-                    }
-                }, false);
-            }
 
 
-            seal2()
+
+
 
 
 
